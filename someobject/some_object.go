@@ -1,15 +1,24 @@
 package someobject
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"math/rand"
+	"time"
+)
 
-type SomeObject struct {
+type ICanFail struct {
 	SomeString string
 	SomeInt int
 }
 
-func (s *SomeObject) DoSomething() (error, *string){
-	if s.SomeInt > 10 {
-		return errors.New("error"), nil
+func (s *ICanFail) CanFail() (error, string){
+	start := time.Now()
+	randomDuration := time.Duration(rand.Intn(4))*time.Second
+	fmt.Println("Trying to DoSomething with randomDuration: ", randomDuration)
+	time.Sleep(randomDuration)
+	if time.Since(start) > 2 {
+		return errors.New("timed out :("), ""
 	}
-	return nil, &s.SomeString
+	return nil, "Hello!"
 }
