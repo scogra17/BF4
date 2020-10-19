@@ -2,20 +2,35 @@ package main
 
 import (
 	"exponential_backoff/exponentialbackoff"
-	"exponential_backoff/someobject"
+	"exponential_backoff/sloths"
+	"fmt"
 )
 
 
 func main() {
-	object := someobject.ICanFail{
-		SomeString: "Bonjour",
-		SomeInt:    0,
+	flashSlothmore := sloths.FlashSlothmore{
+		MaxMillisecondsToProcessTransaction: 4000,
+		MillisecondsToFallAsleep:            3000,
 	}
 
 	stoppingCriteria := exponentialbackoff.StoppingCriteria{
-		int(0),
-		int(10),
+		MaxRetriesAllowed: 10,
+		RetriesCompleted:  0,
 	}
 
-	exponentialbackoff.ExponentialBackoff(&object, []int{1000, 2000}, &stoppingCriteria, 1000)
+	durationsForBackoffsMilliseconds := []int{100, 200, 400, 800}
+	jitterInMilliseconds := 100
+
+	err, resp := exponentialbackoff.ExponentialBackoff(
+		&flashSlothmore,
+		durationsForBackoffsMilliseconds,
+		&stoppingCriteria,
+		jitterInMilliseconds)
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(resp)
+	}
+
 }

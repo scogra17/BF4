@@ -10,36 +10,48 @@ type Failable interface {
 	CanFail() (error, string)
 }
 
+// StoppingCriteria manages the retry data for exponential backoff
 type StoppingCriteria struct {
-	RetriesCompleted    int // has zero value of 0
-	MaxRetriesCompleted int
+	RetriesCompleted  int // zero value of 0
+	MaxRetriesAllowed int
 }
 
-func ExponentialBackoff(object Failable, durations []int, stoppingCriteria *StoppingCriteria, jitterInMilliseconds int) (error, string) {
-	// Try the operation once
+func durationWithJitter(duration, jitter int) int {
+	// Jitter should be a maximum of twice duration
+	if jitter > duration*2 {
+		jitter = duration*2
+	}
+	randomJitter := rand.Intn(jitter) - jitter / 2
+	durationWithJitter := duration + randomJitter
+
+	return durationWithJitter
+}
+
+func ExponentialBackoff(object Failable, durationsInMilliseconds []int, stoppingCriteria *StoppingCriteria, jitterInMilliseconds int) (error, string) {
+	// First attempt
 	err, resp := object.CanFail()
 
-	if len(durations) != 0 && (err != nil && stoppingCriteria.RetriesCompleted < stoppingCriteria.MaxRetriesCompleted) {
-		fmt.Println("**Call to object.DoSomething failed**")
-		fmt.Println("stoppingCriteria.RetriesCompleted: ", stoppingCriteria.RetriesCompleted)
-		fmt.Println("durations: ", durations)
-		// Retry operations
-		sleepDurationInt := durations[0]
-		randomJitter := rand.Intn(jitterInMilliseconds) - jitterInMilliseconds / 2
-		fmt.Println("randomJitter: ", randomJitter)
-		sleepDurationJitterIncluded := sleepDurationInt + randomJitter
-		fmt.Println("sleepDurationJitterIncluded: ", sleepDurationJitterIncluded)
-		sleepDurationJitterIncludedDuration := time.Duration(sleepDurationJitterIncluded)
-		time.Sleep(sleepDurationJitterIncludedDuration*time.Millisecond)
-
+	// Retry if there are still unused durations remaining and stopping criteria
+	// are not met
+	if len(durationsInMilliseconds) != 0 && err != nil &&
+		stoppingCriteria.RetriesCompleted < stoppingCriteria.MaxRetriesAllowed {
 		stoppingCriteria.RetriesCompleted++
 
-		ExponentialBackoff(object, durations[1:], stoppingCriteria, jitterInMilliseconds)
-	}
+		backoffMilliseconds :=
+			durationWithJitter(durationsInMilliseconds[0], jitterInMilliseconds)
 
-	fmt.Print("*****RETURN!*******")
-	fmt.Print("err", err)
-	fmt.Print("resp", resp)
+		fmt.Printf("Will attempt retry #%d following backoff of %d ms\n",
+			stoppingCriteria.RetriesCompleted, backoffMilliseconds)
+
+		time.Sleep(time.Duration(backoffMilliseconds)*time.Millisecond)
+
+		return ExponentialBackoff(
+			object,
+			durationsInMilliseconds[1:],
+			stoppingCriteria,
+			jitterInMilliseconds,
+		)
+	}
 	return err, resp
 }
 
