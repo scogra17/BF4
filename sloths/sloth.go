@@ -2,7 +2,6 @@ package sloths
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -25,9 +24,6 @@ func (f *FlashSlothmore) CanFail() (error, string){
 	transactionDelayMilliseconds := randWithSeed.Intn(f.MaxMillisecondsToProcessTransaction)
 
 	time.Sleep(time.Duration(transactionDelayMilliseconds) * time.Millisecond)
-
-	fmt.Println("transactionDelayMilliseconds: ", transactionDelayMilliseconds)
-	fmt.Println("MillisecondsToFallAsleep: ", f.MillisecondsToFallAsleep)
 
 	if transactionDelayMilliseconds > f.MillisecondsToFallAsleep {
 		return errors.New("Flash Slothmore fell asleep before he could" +

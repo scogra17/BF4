@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15429cfe-3b36-49f4-9e5f-187f5e50e8f4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sloths/sloth.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exponential_backoff" beforeDir="false" afterPath="$PROJECT_DIR$/exponential_backoff" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exponentialbackoff/exponential_backoff.go" beforeDir="false" afterPath="$PROJECT_DIR$/exponentialbackoff/exponential_backoff.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/someobject/some_object.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sloths/sloth.go" beforeDir="false" afterPath="$PROJECT_DIR$/sloths/sloth.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
