@@ -14,7 +14,7 @@ some transactions.
 `sloths.FlashSlothmore` implements the `exponentialbackoff.Failable` interface
 qualifying as an operation that has "a chance of failure".
 
-The main function calls ExponentialBackoff with arbitarily selected arguments of 
+The main function calls `ExponentialBackoff` with arbitarily selected arguments of 
 the following types:
 * Failable interface
 * slice of ints representing backoff durations in milliseconds 

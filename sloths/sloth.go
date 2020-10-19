@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// FlashSlothmore manages the maximum milliseconds it takes for the Flash
+// FlashSlothmore manages the maximum milliseconds it takes for Flash
 // Slothmore, Department of Mammal Vehicles employee, to process a transaction
 // and the number of milliseconds it takes for him to fall asleep
 // FYI: https://zootopia.fandom.com/wiki/Flash_Slothmore

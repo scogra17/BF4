@@ -40,6 +40,7 @@ func ExponentialBackoff(object Failable, durationsInMilliseconds []int, stopping
 		backoffMilliseconds :=
 			durationWithJitter(durationsInMilliseconds[0], jitterInMilliseconds)
 
+		// Log attempt information
 		fmt.Printf("Will attempt retry #%d following backoff of %d ms\n",
 			stoppingCriteria.RetriesCompleted, backoffMilliseconds)
 

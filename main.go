@@ -8,16 +8,15 @@ import (
 
 
 func main() {
+	// Create arguments for ExponentialBackoff
 	flashSlothmore := sloths.FlashSlothmore{
 		MaxMillisecondsToProcessTransaction: 4000,
 		MillisecondsToFallAsleep:            3000,
 	}
-
 	stoppingCriteria := exponentialbackoff.StoppingCriteria{
 		MaxRetriesAllowed: 10,
 		RetriesCompleted:  0,
 	}
-
 	durationsForBackoffsMilliseconds := []int{100, 200, 400, 800}
 	jitterInMilliseconds := 100
 
@@ -27,10 +26,10 @@ func main() {
 		&stoppingCriteria,
 		jitterInMilliseconds)
 
+	// Log the final result of ExponentialBackoff
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(resp)
 	}
-
 }
